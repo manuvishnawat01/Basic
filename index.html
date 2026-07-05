@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Moderate to High-Level MCQ Quiz</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --correct: #10b981;
+            --correct-light: #ecfdf5;
+            --incorrect: #ef4444;
+            --incorrect-light: #fef2f2;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .question-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            background: var(--card-bg);
+            transition: all 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            white-space: pre-line;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input {
+            margin-top: 4px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .option-text {
+            white-space: pre-line;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+
+        /* Results styling definitions */
+        .correct-choice {
+            background-color: var(--correct-light) !important;
+            border-color: var(--correct) !important;
+            color: #065f46;
+            font-weight: bold;
+        }
+
+        .incorrect-choice {
+            background-color: var(--incorrect-light) !important;
+            border-color: var(--incorrect) !important;
+            color: #991b1b;
+        }
+
+        .feedback-badge {
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        #result-summary {
+            display: none;
+            background: #eef2ff;
+            border: 2px solid var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #result-summary h2 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .score-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>SQL Challenge</h1>
+    <p class="subtitle">Moderate to High-Level MCQs (25 Questions)</p>
+    
+    <div id="result-summary">
+        <h2>Quiz Completed!</h2>
+        <div class="score-display" id="score-text">0 / 25</div>
+        <p id="percentage-text">0%</p>
+    </div>
+
+    <form id="quiz-form">
+        <div id="questions-container"></div>
+        <button type="submit" class="submit-btn" id="submit-button">Submit Quiz</button>
+    </form>
+</div>
+
+<script>
+    const quizData = [
+        { id: 1, q: "Which of the following SQL queries returns the second highest salary?", a: "SELECT MAX(salary)\nFROM Employee\nWHERE salary < (SELECT MAX(salary) FROM Employee);", o: ["SELECT MAX(salary) FROM Employee;", "SELECT MAX(salary)\nFROM Employee\nWHERE salary < (SELECT MAX(salary) FROM Employee);", "SELECT MIN(salary) FROM Employee;", "SELECT salary FROM Employee LIMIT 2;"] },
+        { id: 2, q: "Which clause is executed first in a SQL query?", a: "FROM", o: ["SELECT", "ORDER BY", "WHERE", "FROM"] },
+        { id: 3, q: "Which query correctly counts employees whose department is 'HR'?", a: "SELECT COUNT(*)\nFROM Employee\nWHERE department='HR';", o: ["SELECT COUNT(*)\nFROM Employee\nWHERE department='HR';", "SELECT SUM(*)\nFROM Employee\nWHERE department='HR';", "SELECT COUNT(department='HR');", "SELECT TOTAL(*)\nFROM Employee;"] },
+        { id: 4, q: "Which aggregate function ignores NULL values?", a: "All of the above", o: ["SUM()", "AVG()", "COUNT(column)", "All of the above"] },
+        { id: 5, q: "Which query returns employees earning more than the average salary?", a: "SELECT *\nFROM Employee\nWHERE salary >\n(SELECT AVG(salary) FROM Employee);", o: ["SELECT *\nFROM Employee\nWHERE salary >\n(SELECT AVG(salary) FROM Employee);", "SELECT AVG(salary)\nFROM Employee;", "SELECT *\nFROM Employee\nHAVING salary > AVG(salary);", "SELECT *\nFROM Employee\nGROUP BY salary;"] },
+        { id: 6, q: "Which SQL clause is used to filter groups?", a: "HAVING", o: ["WHERE", "HAVING", "GROUP BY", "ORDER BY"] },
+        { id: 7, q: "What is the output?\n\nSELECT COUNT(city)\nFROM Student;\n\nAssume there are 100 rows and 10 NULL city values.", a: "90", o: ["100", "90", "10", "Error"] },
+        { id: 8, q: "Which statement about GROUP BY is true?", a: "It groups rows having the same values.", o: ["It is used before WHERE.", "It groups rows having the same values.", "It sorts records.", "It removes duplicates."] },
+        { id: 9, q: "Which clause must be used with aggregate functions for filtering grouped data?", a: "HAVING", o: ["WHERE", "HAVING", "ORDER BY", "DISTINCT"] },
+        { id: 10, q: "Which JOIN returns all records from both tables?", a: "FULL OUTER JOIN", o: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN"] },
+        { id: 11, q: "Which JOIN returns only matching rows from both tables?", a: "INNER JOIN", o: ["LEFT JOIN", "INNER JOIN", "RIGHT JOIN", "FULL JOIN"] },
+        { id: 12, q: "Which JOIN returns all rows from the left table and matching rows from the right table?", a: "LEFT JOIN", o: ["RIGHT JOIN", "FULL JOIN", "LEFT JOIN", "CROSS JOIN"] },
+        { id: 13, q: "What is the output of a CROSS JOIN?", a: "Cartesian Product", o: ["Matching records", "Cartesian Product", "Duplicate records", "NULL values"] },
+        { id: 14, q: "Which SQL command permanently removes both data and table structure?", a: "DROP", o: ["DELETE", "TRUNCATE", "DROP", "REMOVE"] },
+        { id: 15, q: "Which command can be rolled back (in most databases)?", a: "DELETE", o: ["DELETE", "DROP", "TRUNCATE", "ALTER"] },
+        { id: 16, q: "Which keyword is used to eliminate duplicate rows?", a: "DISTINCT", o: ["UNIQUE", "DISTINCT", "GROUP", "FILTER"] },
+        { id: 17, q: "Which SQL query returns the highest salary from each department?", a: "SELECT department,\n       MAX(salary)\nFROM Employee\nGROUP BY department;", o: ["SELECT department,\n       MAX(salary)\nFROM Employee\nGROUP BY department;", "SELECT MAX(salary)\nFROM Employee;", "SELECT department\nFROM Employee;", "SELECT department,\n       salary\nFROM Employee;"] },
+        { id: 18, q: "Which operator is used with subqueries returning multiple values?", a: "IN", o: ["=", "IN", "LIKE", "BETWEEN"] },
+        { id: 19, q: "Which function returns the current system date in MySQL?", a: "CURRENT_DATE()", o: ["TODAY()", "GETDATE()", "CURRENT_DATE()", "NOWDATE()"] },
+        { id: 20, q: "What is Normalization mainly used for?", a: "Reduce data redundancy", o: ["Increase redundancy", "Reduce data redundancy", "Increase table size", "Improve UI"] },
+        { id: 21, q: "Which Normal Form removes partial dependency?", a: "2NF", o: ["1NF", "2NF", "3NF", "BCNF"] },
+        { id: 22, q: "Which Normal Form removes transitive dependency?", a: "3NF", o: ["1NF", "2NF", "3NF", "4NF"] },
+        { id: 23, q: "Which ACID property ensures that either all operations occur or none occur?", a: "Atomicity", o: ["Consistency", "Isolation", "Atomicity", "Durability"] },
+        { id: 24, q: "Which ACID property guarantees committed data remains even after a system crash?", a: "Durability", o: ["Atomicity", "Durability", "Consistency", "Isolation"] },
+        { id: 25, q: "Which SQL query finds duplicate employee names?", a: "SELECT name,\n       COUNT(*)\nFROM Employee\nGROUP BY name\nHAVING COUNT(*) > 1;", o: ["SELECT name\nFROM Employee;", "SELECT name,\n       COUNT(*)\nFROM Employee\nGROUP BY name\nHAVING COUNT(*) > 1;", "SELECT DISTINCT name\nFROM Employee;", "SELECT COUNT(name)\nFROM Employee;"] }
+    ];
+
+    const container = document.getElementById('questions-container');
+
+    // Generate questions dynamically
+    quizData.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.id = `q-card-${item.id}`;
+
+        const qText = document.createElement('div');
+        qText.className = 'question-text';
+        qText.textContent = `${index + 1}. ${item.q}`;
+        card.appendChild(qText);
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options-container';
+
+        item.o.forEach((option, oIdx) => {
+            const label = document.createElement('label');
+            label.className = 'option-label';
+            label.id = `label-${item.id}-${oIdx}`;
+
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = `question-${item.id}`;
+            input.value = option;
+            input.required = true;
+
+            const span = document.createElement('span');
+            span.className = 'option-text';
+            span.textContent = option;
+
+            label.appendChild(input);
+            label.appendChild(span);
+            optionsDiv.appendChild(label);
+        });
+
+        const feedback = document.createElement('div');
+        feedback.className = 'feedback-badge';
+        feedback.id = `feedback-${item.id}`;
+        card.appendChild(optionsDiv);
+        card.appendChild(feedback);
+
+        container.appendChild(card);
+    });
+
+    // Handle Form Submission
+    document.getElementById('quiz-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let score = 0;
+
+        quizData.forEach((item) => {
+            const selected = document.querySelector(`input[name="question-${item.id}"]:checked`);
+            const feedbackBadge = document.getElementById(`feedback-${item.id}`);
+            
+            // Loop through options to colorize answers
+            item.o.forEach((option, oIdx) => {
+                const currentLabel = document.getElementById(`label-${item.id}-${oIdx}`);
+                const currentInput = currentLabel.querySelector('input');
+                
+                // Disable choices after submission
+                currentInput.disabled = true;
+
+                if (option === item.a) {
+                    currentLabel.classList.add('correct-choice');
+                }
+                if (selected && selected.value === option && selected.value !== item.a) {
+                    currentLabel.classList.add('incorrect-choice');
+                }
+            });
+
+            // Display Feedback string text
+            feedbackBadge.style.display = 'block';
+            if (selected && selected.value === item.a) {
+                score++;
+                feedbackBadge.textContent = "✓ Correct";
+                feedbackBadge.style.color = "var(--correct)";
+            } else {
+                feedbackBadge.textContent = "✗ Incorrect";
+                feedbackBadge.style.color = "var(--incorrect)";
+            }
+        });
+
+        // Show Scoreboard
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        document.getElementById('result-summary').style.display = 'block';
+        document.getElementById('score-text').textContent = `${score} / ${quizData.length}`;
+        document.getElementById('percentage-text').textContent = `You scored ${Math.round((score / quizData.length) * 100)}%`;
+        document.getElementById('submit-button').style.display = 'none';
+    });
+</script>
+
+</body>
+</html>
